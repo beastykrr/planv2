@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1020">
+<title>SK-2028 · 9 клас → TUKE FEI Košice</title>
+<style>
+  :root {
+    --bg: #0b1020;
+    --bg-card: #131a2e;
+    --bg-soft: #1a2240;
+    --border: #2a3358;
+    --text: #e6ecff;
+    --muted: #95a0c4;
+    --accent: #7dd3fc;
+    --accent-2: #a78bfa;
+    --ok: #4ade80;
+    --warn: #fbbf24;
+    --bad: #f87171;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { background: var(--bg); color: var(--text); margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.55;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  header {
+    padding: 32px 20px 20px;
+    background: linear-gradient(135deg, #1b1f44 0%, #0b1020 100%);
+    border-bottom: 1px solid var(--border);
+  }
+  header .wrap { max-width: 880px; margin: 0 auto; }
+  header h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: -0.01em; }
+  header .sub { color: var(--muted); font-size: 14px; }
+  header .badge {
+    display: inline-block;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 12px;
+    margin-right: 6px;
+    margin-top: 8px;
+    color: var(--accent);
+  }
+  nav.toc {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(11, 16, 32, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  nav.toc a {
+    display: inline-block;
+    margin-right: 14px;
+    color: var(--muted);
+    font-size: 13px;
+    padding: 4px 0;
+  }
+  nav.toc a:hover { color: var(--text); text-decoration: none; }
+  main { max-width: 880px; margin: 0 auto; padding: 24px 20px 80px; }
+  section { margin: 36px 0; scroll-margin-top: 72px; }
+  section h2 {
+    font-size: 22px;
+    margin: 0 0 14px;
+    color: var(--text);
+    border-bottom: 2px solid var(--accent);
+    display: inline-block;
+    padding-bottom: 4px;
+  }
+  section h3 { font-size: 17px; color: var(--accent-2); margin: 20px 0 8px; }
+  p { margin: 8px 0; }
+  ul, ol { margin: 8px 0; padding-left: 22px; }
+  li { margin: 4px 0; }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin: 12px 0;
+  }
+  .card.warn { border-color: var(--warn); background: #2b2310; }
+  .card.bad  { border-color: var(--bad);  background: #2a1517; }
+  .card.ok   { border-color: var(--ok);   background: #142a1d; }
+  .card h3 { margin-top: 0; }
+  .label {
+    display: inline-block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .label.warn { background: var(--warn); color: #261a00; }
+  .label.bad  { background: var(--bad);  color: #2b0a0a; }
+  .label.ok   { background: var(--ok);   color: #062a14; }
+  .label.acc  { background: var(--accent); color: #052230; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+  th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: var(--bg-soft); color: var(--accent); font-weight: 600; }
+  td.num { text-align: right; font-family: var(--mono); }
+  code, .mono { font-family: var(--mono); font-size: 0.93em; background: var(--bg-soft); padding: 1px 6px; border-radius: 4px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 600px) { .grid2 { grid-template-columns: 1fr; } }
+  .kpi {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .kpi .v { font-size: 22px; font-family: var(--mono); color: var(--accent); }
+  .kpi .l { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .never { background: #2a1517; border: 1px solid var(--bad); border-radius: 12px; padding: 16px 18px; }
+  .never li { color: #fbb; }
+  .quote {
+    border-left: 3px solid var(--accent-2);
+    padding: 6px 0 6px 14px;
+    color: var(--text);
+    font-style: italic;
+    margin: 14px 0;
+  }
+  details {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin: 8px 0;
+  }
+  details summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--accent);
+    list-style: none;
+  }
+  details summary::-webkit-details-marker { display: none; }
+  details[open] summary { margin-bottom: 8px; }
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    padding: 30px 20px;
+    border-top: 1px solid var(--border);
+  }
+  .ts {
+    font-family: var(--mono);
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .progress {
+    height: 8px;
+    background: var(--bg-soft);
+    border-radius: 999px;
+    overflow: hidden;
+    margin: 6px 0 4px;
+  }
+  .progress > i {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>SK-2028 · від 9 класу до Košice</h1>
+    <div class="sub">
+      Стан на <strong>кінець травня 2026</strong>. 16 років. 9-й клас закінчено. До вступу в <strong>TUKE FEI Košice</strong>, спеціальність <em>Kybernetická bezpečnosť</em> — <strong>~28 місяців</strong>.
+    </div>
+    <div>
+      <span class="badge">🎯 Ціль: безкоштовне навчання SK</span>
+      <span class="badge">📍 Вознесенськ → Кошице</span>
+      <span class="badge">🇸🇰 Лише словацький трек</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <a href="#status">Стартова точка</a>
+  <a href="#now">З 1 червня</a>
+  <a href="#timeline">Таймлайн</a>
+  <a href="#math">Математика</a>
+  <a href="#sk">Словацька</a>
+  <a href="#en">Англ. + SAT</a>
+  <a href="#money">Гроші</a>
+  <a href="#legal">Документи</a>
+  <a href="#habits">Звички</a>
+  <a href="#never">Чого не робити</a>
+</nav>
+
+<main>
+
+<!-- =========================  STATUS  ========================= -->
+<section id="status">
+  <h2>Стартова точка · кінець травня 2026</h2>
+  <p>Це не «початок з нуля». Це <strong>момент, коли треба перейти з «думати про переїзд» у «робити крок щодня»</strong>. Літо — найдорожчий ресурс на найближчі 24 місяці.</p>
+
+  <div class="grid2">
+    <div class="kpi"><div class="v">16</div><div class="l">років</div></div>
+    <div class="kpi"><div class="v">~28 міс</div><div class="l">до вступу 2028</div></div>
+    <div class="kpi"><div class="v">140 / 200</div><div class="l">НМТ математика зараз</div></div>
+    <div class="kpi"><div class="v">175+</div><div class="l">НМТ цільовий бал</div></div>
+    <div class="kpi"><div class="v">B1</div><div class="l">англійська зараз</div></div>
+    <div class="kpi"><div class="v">A0</div><div class="l">словацька зараз</div></div>
+    <div class="kpi"><div class="v">~3 400 €</div><div class="l">VNJ заморожено (чіпати НЕ можна)</div></div>
+    <div class="kpi"><div class="v">~10 000 €</div><div class="l">потрібно до літа 2028</div></div>
+  </div>
+
+  <div class="card warn">
+    <span class="label warn">УВАГА</span> <strong>Польща виключена.</strong>
+    Безкоштовне навчання іноземця без коренів у PL потребує сертифіката <code>PKPZJP C1</code>, який видається лише з 18 років на день іспиту. На 2028 студент ще не буде дорослим — перший дозволений іспит можливий тільки восени 2028, тобто вступ зсувається на 2029/2030.
+    <br><strong>Висновок:</strong> усі зусилля — у словацький трек. Жодного «дублюю PL про всяк випадок».
+  </div>
+
+  <p><strong>Школа далі:</strong> з вересня 2026 — 10-й клас, з вересня 2027 — 11-й клас, випуск і НМТ — весна-літо 2028.</p>
+</section>
+
+<!-- =========================  NEXT  ========================= -->
+<section id="now">
+  <h2>Що робити з 1 червня 2026</h2>
+  <p>Літо — Фаза 1 з математики + старт словацької. <strong>45 хвилин на день, 6 днів на тиждень.</strong> Це <em>не</em> 90 хв — на старті 90 хв = вигорання до 6-го тижня.</p>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>Щоденний мінімум (floor)</h3>
+      <ul>
+        <li><strong>10 хв Anki</strong> — словацька, колода «1000 найчастотніших слів».</li>
+        <li><strong>1 задача з математики</strong> — за поточною темою тижня.</li>
+      </ul>
+      <p class="ts">Floor виконується завжди. Навіть при блекауті чи тривозі.</p>
+    </div>
+    <div class="card">
+      <h3>Активна сесія (на додачу)</h3>
+      <ul>
+        <li><strong>45 хв math</strong> — теорія з <code>mathema.me</code> + задачі з <code>znoclub.com</code>.</li>
+        <li><strong>1 відео Easy Slovak</strong> з субтитрами, виписати 3 нових слова в Anki.</li>
+      </ul>
+      <p class="ts">6 днів на тиждень. Один день — повний відпочинок.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Перші 2 тижні (1 — 14 червня) — Дроби та відсотки</h3>
+    <ul>
+      <li>Додавання / віднімання / множення / ділення дробів, мішані числа.</li>
+      <li>Дроби ↔ десяткові, відсоток від числа, знаходження цілого.</li>
+      <li>Ресурс: <code>mathema.me</code> → «Дроби» (усі вправи по порядку).</li>
+      <li>20 задач/день з <code>znoclub.com</code> → фільтр «Дроби та відсотки».</li>
+      <li><strong>Мilestone:</strong> 20 правильних поспіль без калькулятора.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- =========================  TIMELINE  ========================= -->
+<section id="timeline">
+  <h2>24 місяці одним поглядом</h2>
+  <table>
+    <thead><tr><th>Період</th><th>Математика</th><th>Мови</th><th>Інше</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Літо 2026</strong><br><span class="ts">Фаза 1</span></td>
+        <td>45 хв/д · базова алгебра + планіметрія. Ціль: 150+ на mock.</td>
+        <td>SK A0: Anki 1000 слів + Easy Slovak.</td>
+        <td>Стартові накопичення ~50 €/міс.</td>
+      </tr>
+      <tr>
+        <td><strong>10-й клас</strong><br>09.2026 — 05.2027<br><span class="ts">Фаза 2</span></td>
+        <td>30/60 хв · функції, тригонометрія, похідна. Ціль: 165+ у травні 2027.</td>
+        <td>SK A1 → A2 (Krížom-krážom). EN: Cambridge Prepare B2.</td>
+        <td>З жовтня 2026 темп ~375 €/міс (борги погашені).</td>
+      </tr>
+      <tr>
+        <td><strong>Літо 2027</strong><br><span class="ts">Фаза 3</span></td>
+        <td>60 хв/д · log/exp рівняння, стереометрія, симуляція. Ціль: 170+.</td>
+        <td>SK на B1. EN: підтвердити B2 (Cambridge B2 First practice).</td>
+        <td>Підготовка нострифікації (старт осінь 2027).</td>
+      </tr>
+      <tr>
+        <td><strong>11-й клас</strong><br>09.2027 — 05.2028<br><span class="ts">Фаза 4</span></td>
+        <td>45/90 хв · інтеграли, комбінаторика, параметри. Mock щонеділі. Ціль: 175+.</td>
+        <td>SK сертифікат (ECL або ŠJS FF UK), весна 2028.</td>
+        <td>Апостиль, переклад, заявка в TUKE FEI (березень-квітень 2028).</td>
+      </tr>
+      <tr>
+        <td><strong>Літо 2028</strong></td>
+        <td>НМТ → подача результату.</td>
+        <td>Сертифікат словацької → подача в TUKE.</td>
+        <td>VNJ на рахунку. Подача на prechodný pobyt. SAIA-стипендія.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- =========================  MATH  ========================= -->
+<section id="math">
+  <h2>Математика · 140 → 175+</h2>
+  <p>Метод єдиний: <strong>Active recall</strong>. Прочитав теорію → закрив книгу → розв'язав на папері. Без підкреслювань. Без «перечитаю ще раз».</p>
+
+  <details open>
+    <summary>Фаза 1 — Літо 2026 (45 хв/д, 6 днів)</summary>
+    <ol>
+      <li><strong>Тижні 1–2:</strong> Дроби та відсотки.</li>
+      <li><strong>Тижні 3–4:</strong> Степені і корені. Drill: <code>√(a²+b²) ≠ a+b</code>.</li>
+      <li><strong>Тижні 5–6:</strong> Формули скороченого множення.</li>
+      <li><strong>Тижні 7–8:</strong> Лінійні рівняння і системи. 50% — текстові.</li>
+      <li><strong>Тижні 9–10:</strong> Квадратні рівняння, дискримінант, Вієт.</li>
+      <li><strong>Тижні 11–12:</strong> Базова планіметрія. Малювати схему до кожної задачі.</li>
+      <li><strong>Тиждень 13:</strong> Перший повний mock (НМТ 2024, 150 хв, без телефону) → drill найгіршої категорії помилок.</li>
+    </ol>
+    <p><strong>Ціль 31 серпня:</strong> 150+. Якщо &lt;145 — повторити 2 найслабші теми перед стартом Фази 2.</p>
+  </details>
+
+  <details>
+    <summary>Фаза 2 — 10-й клас, вересень 2026 — травень 2027</summary>
+    <ul>
+      <li><strong>30 хв будні / 60 хв вихідні.</strong> Кожна сесія: поточна тема (20 хв) + 2-3 задачі з Фази 1 (interleaving).</li>
+      <li>Вер: квадратні нерівності · Жов: функції (ОДЗ!) · Лис: показн./логар. · Гру: тригонометрія I (одиничне коло).</li>
+      <li>Січ: тригонометрія II · Лют: координати + вектори · Бер: похідна · Кві: просунута планіметрія.</li>
+      <li>Тра 2027: 2 повних mock'и · ціль <strong>165+</strong>.</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>Фаза 3 — Літо 2027 (60 хв/д)</summary>
+    <ul>
+      <li>Чер: логарифмічні та показникові рівняння (ОДЗ — головне джерело помилок).</li>
+      <li>Лип: стереометрія, 5 формул напам'ять.</li>
+      <li>Сер: повна симуляція — mock щотижня, drill топ-2 тем помилок.</li>
+      <li><strong>Ціль 31 серпня:</strong> 170+.</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>Фаза 4 — 11-й клас, вересень 2027 — травень 2028</summary>
+    <ul>
+      <li><strong>45 хв будні / 90 хв неділя (mock-день).</strong> Середа — розбір помилок + 15 задач drill.</li>
+      <li>Вер-жов: інтеграли · Лис-гру: комбінаторика і ймовірність · Січ-лют: задачі з параметрами.</li>
+      <li>Бер-тра 2028: лише симуляція. Готовність = <strong>3 неділі поспіль 170+</strong>.</li>
+      <li>Фінальна ціль: <strong>175+</strong>.</li>
+    </ul>
+  </details>
+
+  <div class="card warn">
+    <span class="label warn">Тригер репетитора</span>
+    Mock не росте на 5+ балів за 4 тижні поспіль → 1-2 сесії/тиждень з репетитором (5-10 €/год, Preply або Telegram-групи НМТ). Лише по конкретній темі, не «загальна підготовка».
+  </div>
+</section>
+
+<!-- =========================  SK  ========================= -->
+<section id="sk">
+  <h2>Словацька · A0 → B1 сертифікат</h2>
+  <p>Слов'янська мова, темп B1 за 8-10 місяців реальний. Метод: <em>слухати → читати → говорити</em>. Граматика — з підручника, не з ютубу.</p>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>Літо 2026 · A0</h3>
+      <ul>
+        <li>Anki — 1000 найчастотніших слів (5-10 нових/день).</li>
+        <li>Easy Slovak — 1 відео/день з субтитрами.</li>
+        <li><strong>Ніякої формальної граматики.</strong> Тільки вухо + словник.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>10-й клас · A1 → A2</h3>
+      <ul>
+        <li>Krížom-krážom A1 — усі письмові вправи.</li>
+        <li>Потім Krížom-krážom A2 (окрема книга!).</li>
+        <li>7 відмінків — виписувати таблиці від руки.</li>
+        <li>slovake.eu — паралельно з підручником.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Літо 2027 + 11-й клас · A2 → B1</h3>
+      <ul>
+        <li>iTalki — 1 год/тиждень з носієм (~8-12 €/год).</li>
+        <li>SME.sk або Pravda.sk — 15 хв читання щодня.</li>
+        <li>Anki — академічна лексика B1.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Сертифікаційний іспит</h3>
+      <ul>
+        <li><strong>ECL Slovak</strong> або <strong>ŠJS FF UK</strong>.</li>
+        <li>Реєстрація: листопад 2027. Іспит: весна 2028.</li>
+        <li><strong>Дія зараз:</strong> email admissions TUKE FEI — який саме сертифікат вони приймають.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- =========================  EN / SAT  ========================= -->
+<section id="en">
+  <h2>Англійська B1 → B2 + SAT (резерв)</h2>
+
+  <div class="card">
+    <h3>Шлях B1 → B2 · вересень 2026 — червень 2027</h3>
+    <ul>
+      <li>Cambridge English «Prepare B2» — основа.</li>
+      <li>30 хв/день паралельно: BBC Learning English (15) + Anki академічна лексика (15).</li>
+      <li>Літо 2027: Cambridge B2 First practice tests (4Cambridge.org, безкоштовно). Ціль: 70%+ у Reading + Listening.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>SAT-стипендія — параметри і блокери</h3>
+    <ul>
+      <li>Сума: <strong>12 000 €</strong> (400 €/міс × 10 міс/рік). <em>Не 15 000 €.</em></li>
+      <li>Вікно подачі результату: <strong>1 липня — 30 вересня</strong>, щорічно. PDF.</li>
+      <li><strong>Блокер:</strong> B1 англійської не вистачає на Reading (треба B2+) і на math word problems (умови неправильно інтерпретуються).</li>
+      <li>Шлях: B2 до літа 2027 → CollegeBoard practice → іспит весна 2028.</li>
+    </ul>
+  </div>
+
+  <div class="card warn">
+    <span class="label warn">Якщо B2 не виходить до літа 2027</span> SAT відкидаємо. Гап закриваємо через SAIA-стипендію + роботу на кампусі. Англійська все одно потрібна для матеріалів TUKE.
+  </div>
+</section>
+
+<!-- =========================  MONEY  ========================= -->
+<section id="money">
+  <h2>Гроші · фази накопичень і гап</h2>
+
+  <table>
+    <thead><tr><th>Період</th><th>Контекст</th><th>Темп</th><th>Накопичено</th></tr></thead>
+    <tbody>
+      <tr><td>Чер — вер 2026 (5 міс)</td><td>Борги активні + дрібні мед.</td><td class="num">~50 €/міс</td><td class="num">250 €</td></tr>
+      <tr><td>Жов 2026 — чер 2028 (20 міс)</td><td>Борги погашені</td><td class="num">~375 €/міс</td><td class="num">7 500 €</td></tr>
+      <tr><th colspan="3" style="text-align:right">Разом:</th><th class="num">~7 750 €</th></tr>
+    </tbody>
+  </table>
+
+  <div class="grid2">
+    <div class="card"><h3>Потрібно до літа 2028</h3><p class="kpi" style="margin:0"><span class="v">~10 000 €</span><span class="l">1-й рік Кошице + VNJ + резерв</span></p></div>
+    <div class="card bad"><h3>Гап</h3><p class="kpi" style="margin:0; background:transparent; border:none; padding:0"><span class="v">~2 250 €</span><span class="l">треба закрити з зовнішніх джерел</span></p></div>
+  </div>
+
+  <h3>Як закрити гап (за пріоритетом)</h3>
+  <ol>
+    <li><strong>SAIA</strong> — <code>stipendia.sk</code>, перевірити поточну квоту для UA-студентів.</li>
+    <li><strong>Гранти MŠVVaŠ SR</strong> для українців — стан осінь 2027.</li>
+    <li><strong>Робота на кампусі з 1-го курсу</strong> — до 20 годин/тиждень (легально на студ. prechodný pobyt).</li>
+    <li><strong>SAT-стипендія</strong> — резерв, якщо вийде на B2.</li>
+    <li><strong>VAIA.gov.sk</strong> — безкоштовні курси словацької A1-B1 (перевірити доступ для UA 16 років до приїзду).</li>
+  </ol>
+
+  <div class="card warn">
+    <h3>Витрати в Кошице</h3>
+    <ul>
+      <li><strong>Гуртожиток:</strong> 150-200 €/міс — <em>якщо дадуть</em>. Іноземцям не гарантовано.</li>
+      <li><strong>Якщо гуртожитку не буде:</strong> спільна кімната на 2-3 особи (~250 €/міс).</li>
+      <li><strong>Ніколи</strong> не знімати квартиру одному на цьому бюджеті.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- =========================  LEGAL  ========================= -->
+<section id="legal">
+  <h2>Юридичні документи і таймлайн</h2>
+
+  <div class="card">
+    <h3>Правило 50% (Словаччина · Zákon č. 404/2011 Z.z.)</h3>
+    <p>Студентський час на prechodný pobyt зараховується <strong>наполовину</strong> до 5-річного стажу для trvalý pobyt. Бакалавр (2028-2031, 3 роки) = 1.5 року зарахованих → ще +3.5 роки роботи → <strong>eligible для TP ~кінець 2034</strong>.</p>
+    <p>Розрив SK vs PL на постійному статусі — <strong>~2 роки</strong>, не 4. Не перебільшувати.</p>
+  </div>
+
+  <h3>Послідовність документів (старт осені 2027)</h3>
+  <ol>
+    <li><strong>Апостиль</strong> на атестат — <strong>МОН України</strong> або обласне управління освіти. <em>НЕ МЗС</em> (часта помилка).</li>
+    <li><strong>Присяжний переклад</strong> атестата словацькою (zoznam.justice.gov.sk).</li>
+    <li><strong>Nostrifikácia</strong> — заява в регіональний шкільний офіс у Словаччині.</li>
+    <li><strong>Подача в TUKE FEI</strong> — перевірити дедлайн на <code>tuke.sk</code> (зазвичай березень-квітень 2028).</li>
+    <li><strong>Сертифікат словацької</strong> — ECL або ŠJS FF UK. Уточнити email-запитом до admissions.</li>
+  </ol>
+
+  <h3>VNJ для prechodný pobyt</h3>
+  <ul>
+    <li>12 × životné minimum (284,13 €/міс) ≈ <strong>3 410 €/рік</strong> на рахунку.</li>
+    <li>Гроші <strong>повинні існувати безперервно</strong>. Police має право вимагати виписку за 3 місяці.</li>
+  </ul>
+
+  <details>
+    <summary>Verification checklist — підтвердити власноруч до подачі</summary>
+    <ul>
+      <li>☐ Точний дедлайн TUKE FEI на 2028/29 — <code>tuke.sk</code>.</li>
+      <li>☐ Прийнятний сертифікат словацької — email admissions.</li>
+      <li>☐ Поточна сума životné minimum на 2028 і VNJ.</li>
+      <li>☐ Гуртожиток для іноземців 1-го курсу — питати TUKE напряму.</li>
+      <li>☐ Квота SAIA для UA-студентів на 2028/29.</li>
+      <li>☐ Чи доступний VAIA.gov.sk для UA-громадянина 16 років до приїзду.</li>
+      <li>☐ Чи приймає TUKE НМТ напряму чи лише через нострифікацію.</li>
+    </ul>
+  </details>
+</section>
+
+<!-- =========================  HABITS  ========================= -->
+<section id="habits">
+  <h2>Звички, що тримають план 24 місяці</h2>
+
+  <div class="grid2">
+    <div class="card ok">
+      <h3>Floor-звичка</h3>
+      <p>10 хв Anki + 1 задача з математики. <strong>Щодня</strong>. Це сигнал «я ще в грі». Без нього через місяць повертатися важко.</p>
+    </div>
+    <div class="card ok">
+      <h3>Правило 5/7</h3>
+      <p>Тиждень = успішний, якщо <strong>5 днів з 7</strong> виконано. Не binary streak.</p>
+    </div>
+    <div class="card warn">
+      <h3>Правило двох пропусків</h3>
+      <p>Один пропуск — людина. <strong>Два поспіль</strong> — формується новий патерн і план тихо помирає. Сьогодні після пропуску — floor будь-якою ціною.</p>
+    </div>
+    <div class="card">
+      <h3>Identity frame</h3>
+      <p class="quote">«я людина, яка щодня робить крок до переїзду»</p>
+      <p class="ts">Фраза про ідентичність, не про дію. Тримає довше за outcome-based мотивацію.</p>
+    </div>
+  </div>
+
+  <div class="card warn">
+    <h3>Режим війни / блекауту</h3>
+    <p>Регулярні відключення і тривоги — частина реальності у Вознесенську. <strong>Деградований режим — теж режим</strong>:</p>
+    <ul>
+      <li>Anki offline — синхронізувати раз на тиждень.</li>
+      <li>Задачі на папері — друкувати пакет на тиждень наперед.</li>
+      <li>Капіносов паперовий — завжди резерв.</li>
+      <li>При тривозі — Anki в укритті. Це і є floor.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- =========================  NEVER  ========================= -->
+<section id="never">
+  <h2>Чого <em>ніколи</em> не робити</h2>
+  <div class="never">
+    <ol>
+      <li><strong>Python / програмування до вступу.</strong> Воно з'явиться у TUKE з 1-го курсу. До того — математика і словацька.</li>
+      <li><strong>PL-трек паралельно з SK.</strong> Лексична інтерференція гарантована. PL заблоковано (PKPZJP 18+).</li>
+      <li><strong>«Фейковий» баланс</strong> для VNJ через позичені кошти. Виписка за 3 місяці → відмова.</li>
+      <li><strong>Одинокий найм квартири</strong> у Кошице на цьому бюджеті.</li>
+      <li><strong>Pomodoro-додатки і селектори хронотипу.</strong> Зайвий шар, не метод навчання.</li>
+      <li><strong>ICS-експорт у Google Calendar</strong> з усіма дедлайнами. Дати — у цьому файлі.</li>
+      <li><strong>90 хв/день math на старті.</strong> Вигорання до 6-го тижня. Стартуємо з 45.</li>
+      <li><strong>Підкреслювання, перечитування, конспекти без розв'язання.</strong> Це ілюзія навчання.</li>
+      <li><strong>«Спочатку вся теорія теми, потім задачі».</strong> Ні. Теорія → задача → теорія → задача.</li>
+    </ol>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  Документ статичний, працює офлайн (file://). Деталі по фазах — у супутніх <code>.md</code> файлах репозиторію.
+  <br>Знімок: <span class="ts">кінець травня 2026</span>.
+</footer>
+
+</body>
+</html>
